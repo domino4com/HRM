@@ -9,6 +9,7 @@ This is a Weather Sensor measuring Atmospheric **Temperature** and Relative **Hu
 | ChipSet | Sensirion SHT30-DIS| Aosong ASAIR AHT21|
 | Datasheet | [.pdf](https://sensirion.com/media/documents/213E6A3B/61641DC3/Sensirion_Humidity_Sensors_SHT3x_Datasheet_digital.pdf) |[.pdf](http://www.aosong.com/userfiles/files/media/Data%20Sheet%20AHT21.pdf)|
 | Suggested Arduino Library | [GitHub](https://github.com/wemos/WEMOS_SHT3x_Arduino_Library) |[GitHub](https://github.com/enjoyneering/AHTxx)
+| Suggested MicroPython Library |[GitHub](https://github.com/rsc1975/micropython-sht30)| [GitHub](https://github.com/etno712/aht)|
 | Temperature Accuracy | ±0.2 °C |±0.01 °C|
 | Temperature Range | -40 to 125 °C |-40 to 120 °C|
 | Humidity Accuracy | ± 2 %RH |± 2 %RH|
