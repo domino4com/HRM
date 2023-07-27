@@ -1,27 +1,39 @@
-#include "IWA.h"
+#include <ArduinoJson.h>
+#include <Wire.h>
+#ifndef I2C_SDA
+#define I2C_SDA SDA
+#endif
+#ifndef I2C_SCL
+#define I2C_SCL SCL
+#endif
 
-IWA iwa;
+#include "IWA.h"
+IWA input;
+float var1, var2;
+char s[] = "Temperature: %.2f ºC, Humidity: %.2f %%RH\n";
 
 void setup() {
     Serial.begin(115200);
     delay(1000);
-    Serial.printf("\nIWA Test\n");
+    Serial.printf("\nIWA Example Test\n");
 
     Wire.setPins(I2C_SDA, I2C_SCL);
     Wire.begin();
 
-    if (iwa.begin()) {
-        Serial.println("IWA sensor initialized successfully.");
+    if (input.begin()) {
+        Serial.println("IWA initialized successfully.");
     } else {
-        Serial.println("Failed to initialize IWA sensor!");
+        Serial.println("Failed to initialize IWA");
         exit(0);
     }
 }
 
 void loop() {
-    float temperature, humidity;
-    iwa.getData(temperature, humidity);
-    Serial.printf("Temperature: %.2f ºC, Humidity: %.2f %%RH\n", temperature, humidity);
+    if (input.getData(var1, var2)) {
+        Serial.printf(s, var1, var2);
+    } else {
+        Serial.println("Failed to get $$$ data.");
+    }
 
     delay(1000);
 }
