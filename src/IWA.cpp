@@ -19,9 +19,9 @@ bool IWA::readSensor() {
     Wire.requestFrom(_address, (uint8_t)6);
 
     uint16_t rawTemperature = (Wire.read() << 8) | Wire.read();
-    uint8_t tempCRC = Wire.read();
+    Wire.read();
     uint16_t rawHumidity = (Wire.read() << 8) | Wire.read();
-    uint8_t humCRC = Wire.read();
+    Wire.read();
 
     // TODO: Add CRC check here
 
