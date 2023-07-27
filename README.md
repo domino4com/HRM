@@ -1,5 +1,9 @@
 <img src="assets/IWA.svg" width=200 align="right">
 
+
+[![PlatformIO](https://github.com/domino4com/IWA/actions/workflows/platformio.yml/badge.svg)](https://github.com/domino4com/IWA/actions/workflows/platformio.yml)
+[![Arduino](https://github.com/domino4com/IWA/actions/workflows/arduino.yml/badge.svg)](https://github.com/domino4com/IWA/actions/workflows/arduino.yml)
+
 # IWA - Input Weather A
 This is a Weather Sensor measuring Atmospheric **Temperature** and Relative **Humidity**
 | Specifications | ||
