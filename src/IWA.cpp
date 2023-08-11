@@ -49,7 +49,7 @@ bool IWA::getJSON(JsonObject &doc) {
     dataSet["value"] = _temperature;
     dataSet["unit"] = "ºC";
 
-    dataArray.add(dataSet);  // Subsequent data sets
+    dataSet = dataArray.createNestedObject();  // Subsequent data sets
     dataSet["name"] = "Humidity";
     dataSet["value"] = _humidity;
     dataSet["unit"] = "%RH";
