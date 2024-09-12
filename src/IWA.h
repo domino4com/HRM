@@ -6,11 +6,9 @@
 #include "Arduino.h"
 #include "Wire.h"
 
-#define SHT30_DIS_DEFAULT_ADDRESS 0x44
-
 class IWA {
    public:
-    IWA(uint8_t address = SHT30_DIS_DEFAULT_ADDRESS);
+    IWA();
     bool begin();
     bool getData(float &temperature, float &humidity);
     bool getJSON(JsonObject &doc);
@@ -18,7 +16,11 @@ class IWA {
    private:
     uint8_t _address;
     float _temperature, _humidity;
-    bool readSensor();
+    bool readSensor_AHTxx();
+    bool readSensor_SHT30();
+    bool ping(uint8_t address);
+    uint8_t _rawData[7] = {0, 0, 0, 0, 0, 0, 0};
+    bool useAHT21;
 };
 
 #endif  // IWA_H

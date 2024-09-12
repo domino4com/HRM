@@ -1,13 +1,35 @@
 #include "IWA.h"
 
-IWA::IWA(uint8_t address) : _address(address) {}
-
-bool IWA::begin() {
-    Wire.begin();
-    return readSensor();
+IWA::IWA() {
 }
 
-bool IWA::readSensor() {
+bool IWA::ping(uint8_t addr) {
+    // ping i2c with addr to see if it is there
+    int8_t ret = 0;
+    Wire.beginTransmission(addr);
+    ret = Wire.endTransmission();
+    if (ret != 0)
+        return false;
+    return true;
+}
+
+bool IWA::begin() {
+    if (ping(0x38)) {
+        useAHT21 = true;
+        _address = 0x38;
+        Serial.println("AHT21 detected");
+        return true;
+    } else if (ping(0x44)) {
+        useAHT21 = false;
+        _address = 0x44;
+        Serial.println("SHT30 detected");
+        return true;
+    } else {
+        return false;
+    }
+}
+
+bool IWA::readSensor_SHT30() {
     Wire.beginTransmission(_address);
     Wire.write(0x2C);
     Wire.write(0x06);
@@ -31,8 +53,56 @@ bool IWA::readSensor() {
     return true;
 }
 
+bool IWA::readSensor_AHTxx() {
+    Wire.beginTransmission(_address);
+    Wire.write(0xAC);  // send measurement command, strat measurement
+    Wire.write(0x33);  // send measurement control
+    Wire.write(0x00);  // send measurement NOP control
+
+    if (Wire.endTransmission(true) != 0) {
+        return false;
+    }
+    uint8_t dataSize = 7;
+
+    Wire.requestFrom(_address, dataSize, (uint8_t) true);  // read n-byte to "wire.h" rxBuffer, true-send stop after transmission
+
+    if (Wire.available() != dataSize) {
+        return false;
+    }
+
+    for (uint8_t i = 0; i < dataSize; i++) {
+        _rawData[i] = Wire.read();
+    }
+
+    uint32_t temperature = _rawData[3] & 0x0F;  // 20-bit raw temperature data
+    temperature <<= 8;
+    temperature |= _rawData[4];
+    temperature <<= 8;
+    temperature |= _rawData[5];
+
+    _temperature = ((float)temperature / 0x100000) * 200 - 50;
+
+    uint32_t humidity = _rawData[1];  // 20-bit raw humidity data
+    humidity <<= 8;
+    humidity |= _rawData[2];
+    humidity <<= 4;
+    humidity |= _rawData[3] >> 4;
+
+    if (humidity > 0x100000) {
+        humidity = 0x100000;
+    }  // check if RH>100, no need to check for RH<0 since "humidity" is "uint"
+
+    _humidity = ((float)humidity / 0x100000) * 100;
+
+    return true;
+}
+
 bool IWA::getData(float &temp, float &humi) {
-    readSensor();
+    if (useAHT21) {
+        readSensor_AHTxx();
+    } else {
+        readSensor_SHT30();
+    }
 
     temp = _temperature;
     humi = _humidity;
@@ -40,7 +110,11 @@ bool IWA::getData(float &temp, float &humi) {
 }
 
 bool IWA::getJSON(JsonObject &doc) {
-    readSensor();
+    if (useAHT21) {
+        readSensor_AHTxx();
+    } else {
+        readSensor_SHT30();
+    }
 
     JsonArray dataArray = doc.createNestedArray("IWA");
 
