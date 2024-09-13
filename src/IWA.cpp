@@ -109,21 +109,21 @@ bool IWA::getData(float &temp, float &humi) {
     return true;  // Return true for successful read (add error handling if needed)
 }
 
-bool IWA::getJSON(JsonObject &doc) {
+bool IWA::getJSON(JsonDocument &doc) {
     if (useAHT21) {
         readSensor_AHTxx();
     } else {
         readSensor_SHT30();
     }
 
-    JsonArray dataArray = doc.createNestedArray("IWA");
+    JsonArray dataArray = doc["IWA"].to<JsonArray>();
 
-    JsonObject dataSet = dataArray.createNestedObject();  // First data set
+    JsonObject dataSet = dataArray.add<JsonObject>();  // First data set
     dataSet["name"] = "Temperature";
     dataSet["value"] = _temperature;
     dataSet["unit"] = "ºC";
 
-    dataSet = dataArray.createNestedObject();  // Subsequent data sets
+    dataSet = dataArray.add<JsonObject>();  // Subsequent data sets
     dataSet["name"] = "Humidity";
     dataSet["value"] = _humidity;
     dataSet["unit"] = "%RH";

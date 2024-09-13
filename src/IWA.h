@@ -11,7 +11,7 @@ class IWA {
     IWA();
     bool begin();
     bool getData(float &temperature, float &humidity);
-    bool getJSON(JsonObject &doc);
+    bool getJSON(JsonDocument &doc);
 
    private:
     uint8_t _address;
