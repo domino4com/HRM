@@ -17,12 +17,12 @@ bool IWA::begin() {
     if (ping(0x38)) {
         useAHT21 = true;
         _address = 0x38;
-        Serial.println("AHT21 detected");
+        // AHT21 detected
         return true;
     } else if (ping(0x44)) {
         useAHT21 = false;
         _address = 0x44;
-        Serial.println("SHT30 detected");
+        // SHT30 detected
         return true;
     } else {
         return false;
