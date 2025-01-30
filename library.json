@@ -1,8 +1,8 @@
 {
-    "name": "IWA",
+    "name": "HRM",
     "version": "1.0.0",
-    "description": "IWA: Input Weather A - Temeperature and Humidity Sensor",
-    "keywords": "IWA Temperature Humidity",
+    "description": "HRM: Heart Rate Monitor",
+    "keywords": "HRM Heart Rate Monitor",
     "authors": [{
         "name": "Bjarke Gotfredsen",
         "url": "https://github.com/gotfredsen",
@@ -10,9 +10,9 @@
     }],
     "repository": {
         "type": "git",
-        "url": "https://github.com/domino4com/IWA.git"
+        "url": "https://github.com/domino4com/HRM.git"
     },
-    "homepage": "https://github.com/domino4com/IWA",
+    "homepage": "https://github.com/domino4com/HRM",
     "export": {
         "include": [
             "LICENSE",
@@ -26,7 +26,7 @@
     },
     "frameworks": ["arduino", "espidf"],
     "platforms": "esp32",
-    "headers": "IWA.h",
+    "headers": "HRM.h",
     "dependencies":
     {
         "bblanchon/ArduinoJson": "^6.21.3"

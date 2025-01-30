@@ -1,28 +1,17 @@
 #include <ArduinoJson.h>
-#include <Wire.h>
-#ifndef I2C_SDA
-#define I2C_SDA SDA
-#endif
-#ifndef I2C_SCL
-#define I2C_SCL SCL
-#endif
-
-#include "IWA.h"
-IWA input;
+#include "HRM.h"
+HRM input;
 
 void setup() {
     Serial.begin(115200);
     delay(1000);
-    Serial.printf("\nIWA JSON Test\n");
-
-    Wire.setPins(I2C_SDA, I2C_SCL);
-    Wire.begin();
+    Serial.printf("\nJSON Test\n");
 
     if (input.begin()) {
-        Serial.println("IWA initialized successfully.");
+        Serial.println("Input initialized successfully.");
     } else {
-        Serial.println("Failed to initialize IWA!");
-        exit(0);
+        Serial.println("Failed to initialize input!");
+        while(true);
     }
 }
 
@@ -33,7 +22,7 @@ void loop() {
         serializeJsonPretty(doc, Serial);
         Serial.println();
     } else {
-        Serial.println("Failed to get IWA data.");
+        Serial.println("Failed to get input data.");
     }
 
     delay(2000);

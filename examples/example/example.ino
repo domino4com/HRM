@@ -1,38 +1,27 @@
 #include <ArduinoJson.h>
-#include <Wire.h>
-#ifndef I2C_SDA
-#define I2C_SDA SDA
-#endif
-#ifndef I2C_SCL
-#define I2C_SCL SCL
-#endif
-
-#include "IWA.h"
-IWA input;
-float var1, var2;
-char s[] = "Temperature: %.2f ºC, Humidity: %.2f %%RH\n";
+#include "HRM.h"
+HRM input;
+float var1;
+char s[] = "Heart Rate: %.2f bpm\n";
 
 void setup() {
     Serial.begin(115200);
     delay(1000);
-    Serial.printf("\nIWA Example Test\n");
-
-    Wire.setPins(I2C_SDA, I2C_SCL);
-    Wire.begin();
+    Serial.printf("\nExample Test\n");
 
     if (input.begin()) {
-        Serial.println("IWA initialized successfully.");
+        Serial.println("Input initialized successfully.");
     } else {
-        Serial.println("Failed to initialize IWA");
+        Serial.println("Failed to initialize input");
         exit(0);
     }
 }
 
 void loop() {
-    if (input.getData(var1, var2)) {
-        Serial.printf(s, var1, var2);
+    if (input.getData(var1)) {
+        Serial.printf(s, var1);
     } else {
-        Serial.println("Failed to get $$$ data.");
+        Serial.println("Failed to get input data.");
     }
 
     delay(1000);
